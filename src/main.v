@@ -1,33 +1,25 @@
 module main
 
-const voting_age = 18
-
-struct User {
-	name string @[required]
-	age  u8     @[required]
-mut:
-	is_registered bool
-}
-
-fn (mut user User) register() !bool {
-	if user.age >= voting_age {
-		user.is_registered = true
-		return true
-	} else {
-		return error("user '${user.name}' is too young to register for voting")
-	}
-}
+import net
+import io
 
 fn main() {
-	mut john := User{
-		name: 'John Doe'
-		age: 21
-	}
-	println(john)
+	host_addr := 'google.com:80'
 
-	_ := john.register() or {
-		println('error: ${err}')
-		false
+	mut conn := net.dial_tcp(host_addr)!
+	defer {
+		conn.close() or {}
 	}
-	println(john)
+
+	println('Peer address: ${conn.peer_addr()!}')
+	println('Local address: ${conn.addr()!}\r\n\r\n')
+
+	// Send HEAD request for a file
+	conn.write_string('HEAD /index.html HTTP/1.0 \r\n\r\n') or {
+		eprintln('Failed to send HEAD request to ${host_addr}, error: ${err}')
+	}
+
+	// Read all incoming data
+	result := io.read_all(reader: conn)!
+	println(result.bytestr())
 }
