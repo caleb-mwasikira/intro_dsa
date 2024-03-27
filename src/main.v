@@ -1,25 +1,24 @@
 module main
 
-import net
-import io
+import data_structures as ds
 
 fn main() {
-	host_addr := 'google.com:80'
+	numbers := [10, 20, 30]
 
-	mut conn := net.dial_tcp(host_addr)!
-	defer {
-		conn.close() or {}
+	mut stack := ds.Stack.from(...numbers)
+	for _ in 0 .. 5 {
+		item := stack.pop() or {
+			eprintln("${err}\r\n\r\n")
+			break
+		}
+		println(item)
 	}
 
-	println('Peer address: ${conn.peer_addr()!}')
-	println('Local address: ${conn.addr()!}\r\n\r\n')
-
-	// Send HEAD request for a file
-	conn.write_string('HEAD /index.html HTTP/1.0 \r\n\r\n') or {
-		eprintln('Failed to send HEAD request to ${host_addr}, error: ${err}')
+	mut stack_2 := ds.Stack.new(numbers.len)!
+	for _, num in numbers {
+		stack_2.push(num)!
 	}
 
-	// Read all incoming data
-	result := io.read_all(reader: conn)!
-	println(result.bytestr())
+	// adding more items to already full stack
+	stack_2.push(42)!
 }
