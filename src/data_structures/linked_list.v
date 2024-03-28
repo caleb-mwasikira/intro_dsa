@@ -2,7 +2,7 @@ module data_structures
 
 pub struct LinkedList {
 mut:
-	head &Node
+	head &LinearNode
 }
 
 pub fn LinkedList.from(_items ...int) !LinkedList {
@@ -24,7 +24,7 @@ pub fn (mut ll LinkedList) insert_at_head(_items ...int) ! {
 		first_item := items.first()
 		items.delete(0)
 
-		new_node := Node{
+		new_node := LinearNode{
 			data: first_item
 		}
 		ll.head = &new_node
@@ -33,7 +33,7 @@ pub fn (mut ll LinkedList) insert_at_head(_items ...int) ! {
 	mut current_node := ll.head
 
 	for _, item in items {
-		mut new_node := &Node{
+		mut new_node := &LinearNode{
 			data: item
 		}
 
@@ -63,7 +63,7 @@ pub fn (mut ll LinkedList) insert_at_middle(index int, _items ...int) ! {
 			after_node = current_node.next
 
 			for _, item in _items {
-				new_node := &Node{
+				new_node := &LinearNode{
 					data: item
 				}
 				current_node.next = new_node
@@ -96,7 +96,7 @@ pub fn (mut ll LinkedList) insert_at_end(_items ...int) ! {
 	}
 
 	for _, item in _items {
-		new_node := &Node{
+		new_node := &LinearNode{
 			data: item
 		}
 		current_node.next = new_node
@@ -104,7 +104,7 @@ pub fn (mut ll LinkedList) insert_at_end(_items ...int) ! {
 	}
 }
 
-pub fn (ll LinkedList) delete_last_node() !&Node {
+pub fn (ll LinkedList) delete_last_node() !&LinearNode {
 	if ll.is_empty() {
 		return error('attempting to delete from empty linked list')
 	}
@@ -123,7 +123,7 @@ pub fn (ll LinkedList) delete_last_node() !&Node {
 	return last_node
 }
 
-pub fn (mut ll LinkedList) delete_at_index(index int) !&Node {
+pub fn (mut ll LinkedList) delete_at_index(index int) !&LinearNode {
 	ll.validate_index(index)!
 
 	if ll.is_empty() {
@@ -156,7 +156,7 @@ pub fn (mut ll LinkedList) delete_at_index(index int) !&Node {
 	return del_node
 }
 
-pub fn (ll LinkedList) search(value int) !&Node {
+pub fn (ll LinkedList) search(value int) !&LinearNode {
 	if ll.is_empty() {
 		return error('attempting to search from empty linked list')
 	}

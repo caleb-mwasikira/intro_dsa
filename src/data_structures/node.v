@@ -1,7 +1,8 @@
 module data_structures
 
-struct Node {
+// Node for linear data structures
+struct LinearNode {
 mut:
 	data int    @[required]
-	next &Node = unsafe { nil }
+	next &LinearNode = unsafe { nil }
 }
