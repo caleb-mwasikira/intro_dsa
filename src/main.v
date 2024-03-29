@@ -3,38 +3,29 @@ module main
 import data_structures as ds
 
 fn main() {
-	numbers := [10, 20, 30]
+	mut numbers := [50, 30, 20, 40, 70, 60, 80]
 
-	mut ll := ds.LinkedList{
-		head: unsafe { nil }
+	mut bst := ds.BinarySearchTree{}
+	mut root := unsafe { nil }
+
+	// set BST's head
+	first := numbers.first()
+	numbers.delete(0)
+
+	root = bst.insert(mut root, first)
+
+	// insert the rest of the numbers
+	for _, num in numbers {
+		bst.insert(mut root, num)
 	}
-	println('Initial linked list:\n ${ll.repr()}\r\n')
 
-	ll.insert_at_head(...numbers)!
-	println('After head insertion:\n ${ll.repr()}\r\n')
+	// list all values on BST using different traversal algorithms
+	bst.inorder(root)
+	println("\n")
 
-	prime_numbers := [1, 2, 3]
-	ll.insert_at_end(...prime_numbers)!
-	println('After rear insertion:\n ${ll.repr()}\r\n')
+	bst.preorder(root)
+	println("\n")
 
-	new_primes := [5, 7, 11]
-	mid_index := 3
-	ll.insert_at_middle(mid_index, ...new_primes)!
-	println('After inserting middle at index ${mid_index}:\n ${ll.repr()}\r\n')
-
-	last_node := ll.delete_last_node()!
-	println('After deleting last node:\n ${ll.repr()}\r\n')
-	println('Deleted node:\n ${last_node}')
-
-	index := 2
-	del_node := ll.delete_at_index(index)!
-	println('After deleting node at index ${index}:\n ${ll.repr()}\r\n')
-	println('Deleted node:\n ${del_node}')
-
-	data := 42
-	node := ll.search(data) or {
-		eprintln(err)
-		return
-	}
-	println('Node ${node} found')
+	bst.postorder(root)
+	println("\n")
 }
