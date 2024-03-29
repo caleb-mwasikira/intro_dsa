@@ -1,31 +1,41 @@
 module main
 
-import data_structures as ds
-
-fn main() {
-	mut numbers := [50, 30, 20, 40, 70, 60, 80]
-
-	mut bst := ds.BinarySearchTree{}
-	mut root := unsafe { nil }
-
-	// set BST's head
-	first := numbers.first()
-	numbers.delete(0)
-
-	root = bst.insert(mut root, first)
-
-	// insert the rest of the numbers
-	for _, num in numbers {
-		bst.insert(mut root, num)
+fn iterative_fib(n int) !int {
+	if n < 0 {
+		return error('expected n to be a positive non-zero integer')
 	}
 
-	// list all values on BST using different traversal algorithms
-	bst.inorder(root)
-	println("\n")
+	mut prev2 := 0
+	mut prev := 1
+	mut result := 0
 
-	bst.preorder(root)
-	println("\n")
+	if n == 0 {
+		return 0
+	} else if n <= 2 {
+		return 1
+	}
 
-	bst.postorder(root)
-	println("\n")
+	for i := 2; i <= n; i++ {
+		result = prev + prev2
+		prev2 = prev
+		prev = result
+	}
+	return result
+}
+
+fn recursive_fib(n int) !int {
+	if n <= 0 {
+		return 0
+	} else if n <= 2 {
+		return 1
+	} else {
+		return recursive_fib(n - 1)! + recursive_fib(n - 2)!
+	}
+}
+
+fn main() {
+	number := 8
+
+	println("iterative fibonacci: ${iterative_fib(number)!}")
+	println("recursive fibonacci: ${recursive_fib(number)!}")
 }
