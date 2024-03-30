@@ -41,8 +41,33 @@ fn recursive_fib(n int, mut memo map[int]i64) !i64 {
 	return result
 }
 
+fn recursive_trib(n int, mut trib_memo map[int]i64) i64 {
+	mut result := i64(0)
+
+	if n in trib_memo {
+		result = trib_memo[n]
+	} else {
+		result = match n {
+			0, 1 {
+				i64(0)
+			}
+			2 {
+				i64(1)
+			}
+			else {
+				recursive_trib(n - 1, mut trib_memo) + recursive_trib(n - 2, mut trib_memo) +
+					recursive_trib(n - 3, mut trib_memo)
+			}
+		}
+
+		trib_memo[n] = result
+	}
+
+	return result
+}
+
 fn main() {
-	number := 50
+	number := 40
 
 	println('iterative fibonacci: ${iterative_fib(number)!}')
 
@@ -52,4 +77,7 @@ fn main() {
 	// hashmap and retrieve them whenever needed
 	mut memo := map[int]i64{}
 	println('recursive fibonacci: ${recursive_fib(number, mut memo)!}')
+
+	mut trib_memo := map[int]i64{}
+	println('recursive tribonacci: ${recursive_trib(number, mut trib_memo)}')
 }
