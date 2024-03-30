@@ -1,13 +1,13 @@
 module main
 
-fn iterative_fib(n int) !int {
+fn iterative_fib(n int) !i64 {
 	if n < 0 {
 		return error('expected n to be a positive non-zero integer')
 	}
 
-	mut prev2 := 0
-	mut prev := 1
-	mut result := 0
+	mut prev2 := i64(0)
+	mut prev := i64(1)
+	mut result := i64(0)
 
 	if n == 0 {
 		return 0
@@ -23,19 +23,33 @@ fn iterative_fib(n int) !int {
 	return result
 }
 
-fn recursive_fib(n int) !int {
-	if n <= 0 {
-		return 0
-	} else if n <= 2 {
-		return 1
+fn recursive_fib(n int, mut memo map[int]i64) !i64 {
+	mut result := i64(0)
+
+	if n in memo {
+		return memo[n]
 	} else {
-		return recursive_fib(n - 1)! + recursive_fib(n - 2)!
+		if n == 0 || n == 1 {
+			result = n
+		} else {
+			result = recursive_fib(n - 1, mut memo)! + recursive_fib(n - 2, mut memo)!
+		}
+
+		memo[n] = result
 	}
+
+	return result
 }
 
 fn main() {
-	number := 8
+	number := 50
 
-	println("iterative fibonacci: ${iterative_fib(number)!}")
-	println("recursive fibonacci: ${recursive_fib(number)!}")
+	println('iterative fibonacci: ${iterative_fib(number)!}')
+
+	// recursive fibonacci is a very slow algorithm for large input values. O(2^n)
+	// to optimise its performance, we employ a technique used in dynamic programming
+	// called memoization - where we store already-computed duplicate subproblems into a
+	// hashmap and retrieve them whenever needed
+	mut memo := map[int]i64{}
+	println('recursive fibonacci: ${recursive_fib(number, mut memo)!}')
 }
