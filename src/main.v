@@ -1,83 +1,36 @@
 module main
 
-fn iterative_fib(n int) !i64 {
-	if n < 0 {
-		return error('expected n to be a positive non-zero integer')
-	}
-
-	mut prev2 := i64(0)
-	mut prev := i64(1)
-	mut result := i64(0)
-
-	if n == 0 {
-		return 0
-	} else if n <= 2 {
-		return 1
-	}
-
-	for i := 2; i <= n; i++ {
-		result = prev + prev2
-		prev2 = prev
-		prev = result
-	}
-	return result
-}
-
-fn recursive_fib(n int, mut memo map[int]i64) !i64 {
-	mut result := i64(0)
-
-	if n in memo {
-		return memo[n]
+// Answers the question: is it possible to build the amount from
+// a set of numbers?
+// eg: amount = 5, numbers = [1, 2, 3] returns true because the amount
+// 5 can be built from the combinations of 2+3, 3+1+1, 2+1+2 or 1+1+1+1+1
+fn sum_possible(amount int, numbers []u32, mut memo map[int]bool) bool {
+	if amount == 0 {
+		return true
+	} else if amount < 0 {
+		return false
 	} else {
-		if n == 0 || n == 1 {
-			result = n
-		} else {
-			result = recursive_fib(n - 1, mut memo)! + recursive_fib(n - 2, mut memo)!
+		if amount in memo {
+			return true
 		}
 
-		memo[n] = result
-	}
-
-	return result
-}
-
-fn recursive_trib(n int, mut trib_memo map[int]i64) i64 {
-	mut result := i64(0)
-
-	if n in trib_memo {
-		result = trib_memo[n]
-	} else {
-		result = match n {
-			0, 1 {
-				i64(0)
-			}
-			2 {
-				i64(1)
-			}
-			else {
-				recursive_trib(n - 1, mut trib_memo) + recursive_trib(n - 2, mut trib_memo) +
-					recursive_trib(n - 3, mut trib_memo)
+		for _, num in numbers {
+			sub_amount := amount - num
+			if sum_possible(sub_amount, numbers, mut memo) {
+				memo[amount] = true
+				return true
 			}
 		}
 
-		trib_memo[n] = result
+		memo[amount] = false
+		return false
 	}
-
-	return result
 }
 
 fn main() {
-	number := 40
+	amount := 4
+	numbers := [u32(1), 2, 3]
+	mut memo := map[int]bool{}
 
-	println('iterative fibonacci: ${iterative_fib(number)!}')
-
-	// recursive fibonacci is a very slow algorithm for large input values. O(2^n)
-	// to optimise its performance, we employ a technique used in dynamic programming
-	// called memoization - where we store already-computed duplicate subproblems into a
-	// hashmap and retrieve them whenever needed
-	mut memo := map[int]i64{}
-	println('recursive fibonacci: ${recursive_fib(number, mut memo)!}')
-
-	mut trib_memo := map[int]i64{}
-	println('recursive tribonacci: ${recursive_trib(number, mut trib_memo)}')
+	println('Is amount ${amount} sum_possible from the numbers ${numbers}? ${sum_possible(amount, numbers, mut memo)}')
 }
