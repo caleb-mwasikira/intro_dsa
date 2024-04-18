@@ -1,36 +1,19 @@
 module main
 
-// Answers the question: is it possible to build the amount from
-// a set of numbers?
-// eg: amount = 5, numbers = [1, 2, 3] returns true because the amount
-// 5 can be built from the combinations of 2+3, 3+1+1, 2+1+2 or 1+1+1+1+1
-fn sum_possible(amount int, numbers []u32, mut memo map[int]bool) bool {
-	if amount == 0 {
-		return true
-	} else if amount < 0 {
-		return false
-	} else {
-		if amount in memo {
-			return true
-		}
-
-		for _, num in numbers {
-			sub_amount := amount - num
-			if sum_possible(sub_amount, numbers, mut memo) {
-				memo[amount] = true
-				return true
-			}
-		}
-
-		memo[amount] = false
-		return false
-	}
-}
+import data_structures as ds
 
 fn main() {
-	amount := 4
-	numbers := [u32(1), 2, 3]
-	mut memo := map[int]bool{}
+	prime_numbers := [1, 2, 3]
+	mut cll := ds.CircularLinkedList.from(...prime_numbers) or {
+		eprintln(err)
+		exit(1)
+	}
 
-	println('Is amount ${amount} sum_possible from the numbers ${numbers}? ${sum_possible(amount, numbers, mut memo)}')
+	println('initial: ${prime_numbers}\n ${cll.repr()}\n')
+	println('size: ${cll.size}\n')
+
+	odd_numbers := [11, 13, 15]
+	cll.insert_at_beginning(...odd_numbers)
+	println('after insert_at_beginning: ${odd_numbers}\n ${cll.repr()}')
+	println('size: ${cll.size}\n')
 }
