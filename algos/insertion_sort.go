@@ -5,7 +5,7 @@ func InsertionSort(items []int) []int {
 		return items
 	}
 
-	for index, _ := range items {
+	for index := 0; index < len(items); index++ {
 		key := items[index]
 		if index == 0 {
 			// assume first element as already sorted

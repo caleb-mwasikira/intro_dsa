@@ -15,7 +15,7 @@ func TestBubbleSort(t *testing.T) {
 
 		t.Run(testName, func(t *testing.T) {
 			actualOutput := algos.BubbleSort(test.Input)
-			if slices.Compare(actualOutput, test.ExpectedOutput) != 0 {
+			if !slices.Equal(actualOutput, test.ExpectedOutput) {
 				t.Errorf("expected %#v, but got %#v\n", test.ExpectedOutput, actualOutput)
 			}
 		})
