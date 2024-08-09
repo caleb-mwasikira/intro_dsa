@@ -12,9 +12,12 @@ func main() {
 
 	fmt.Printf("original array: %#v\n", arr)
 
-	sortedArr := algos.InsertionSort(arr)
-	fmt.Printf("insertion sort: %#v\n", sortedArr)
+	// sortedArr := algos.InsertionSort(arr)
+	// fmt.Printf("insertion sort: %#v\n", sortedArr)
 
-	sortedArr = algos.BubbleSort(arr)
-	fmt.Printf("bubble sort: %#v\n", sortedArr)
+	// sortedArr = algos.BubbleSort(arr)
+	// fmt.Printf("bubble sort: %#v\n", sortedArr)
+
+	algos.QuickSort(arr, 0, len(arr)-1)
+	fmt.Printf("quick sort %#v\n", arr)
 }
