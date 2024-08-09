@@ -14,4 +14,7 @@ func main() {
 
 	sortedArr := algos.InsertionSort(arr)
 	fmt.Printf("insertion sort: %#v\n", sortedArr)
+
+	sortedArr = algos.BubbleSort(arr)
+	fmt.Printf("bubble sort: %#v\n", sortedArr)
 }
