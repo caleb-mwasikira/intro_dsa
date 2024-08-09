@@ -1,11 +1,20 @@
 package tests
 
+import (
+	"fmt"
+	"log"
+	"os"
+	"strconv"
+)
+
 type Test struct {
 	Input          []int
 	ExpectedOutput []int
 }
 
 var (
+	ARRAY_MAX int = 100
+
 	Tests []Test = []Test{
 		{
 			Input:          []int{6, 40, 61, 44, 41, 80, 20, 11, 24, 19},
@@ -22,6 +31,14 @@ var (
 	}
 )
 
-const (
-	ARRAY_MAX int = 100
-)
+func init() {
+	// get ARRAY_MAX value from env variables or set default to 100
+	val := os.Getenv("ARRAY_MAX")
+	arrayMax, err := strconv.ParseInt(val, 10, 32)
+	if err != nil || arrayMax <= 0 {
+		log.Println("missing/invalid env variable ARRAY_MAX")
+	} else {
+		ARRAY_MAX = int(arrayMax)
+	}
+	fmt.Printf("ARRAY_MAX=%v\n", ARRAY_MAX)
+}
