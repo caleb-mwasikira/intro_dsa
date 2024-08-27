@@ -14,7 +14,8 @@ type FibTest struct {
 }
 
 var (
-	N int = 40
+	MAX_N int = 40
+	N     int = 40
 
 	tests []FibTest = []FibTest{
 		{n: -1, expectedResult: []int{}},
@@ -60,12 +61,16 @@ func BenchmarkFib(b *testing.B) {
 	})
 	fmt.Println()
 
-	b.Run("bench recursiveFib(n int)[]int", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			algos.RecursiveFib(N)
-		}
-	})
-	fmt.Println()
+	if N > MAX_N {
+		b.Logf("skipping bench recursiveFib(n int)[]int as it is too slow for values > %v\n\n", MAX_N)
+	} else {
+		b.Run("bench recursiveFib(n int)[]int", func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				algos.RecursiveFib(N)
+			}
+		})
+		fmt.Println()
+	}
 
 	b.Run("bench cachedRecursiveFib(n int)[]int", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
