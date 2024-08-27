@@ -3,34 +3,37 @@ package main
 import (
 	"fmt"
 	"log"
-	"slices"
 
 	"github.com/caleb-mwasikira/intro_dsa/ds"
 	"github.com/caleb-mwasikira/intro_dsa/utils"
 )
 
 func main() {
-	size := 5
+	size := 4
 	arr := utils.GenRandomArray(size, 0, 100)
 
 	fmt.Printf("original array: %#v\n", arr)
 
 	// add half of items now
-	stack, err := ds.NewStack(size, arr[0:size/2]...)
+	q, err := ds.NewCircularQueue(size, arr[0:len(arr)/2]...)
 	if err != nil {
-		log.Fatalf("error creating new stack: %v\n", err)
+		log.Fatal(err)
 	}
+	fmt.Printf("%#v\n", q.GetItems())
 
 	// and half of items later
-	_, err = stack.Push(arr[size/2:]...)
+	err = q.Enqueue(arr[len(arr)/2:]...)
 	if err != nil {
-		log.Fatalf("error adding item to stack: %v\n", err)
+		log.Fatal(err)
 	}
+	fmt.Printf("%#v\n", q.GetItems())
 
-	// check if items added are on the stack
-	items := stack.GetItems()
-	if !slices.Equal(arr, items) {
-		log.Printf("array %v not equal to stack items %v\n", arr, items)
+	// consume items on the queue; we shd see FIFO rule apply here
+	for {
+		item, err := q.Dequeue()
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(item)
 	}
-
 }
