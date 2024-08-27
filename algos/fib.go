@@ -67,10 +67,16 @@ func cachedRecFib(n int, cache map[int]int) int {
 		return n
 	}
 
-	// memoization
+	// check if value in cache already
 	if val, ok := cache[n]; ok {
 		return val
 	}
 
-	return cachedRecFib(n-1, cache) + cachedRecFib(n-2, cache)
+	prev := cachedRecFib(n-1, cache)
+	prev2 := cachedRecFib(n-2, cache)
+
+	// place calculated fib values onto cache
+	cache[n-1] = prev
+	cache[n-2] = prev2
+	return prev + prev2
 }
