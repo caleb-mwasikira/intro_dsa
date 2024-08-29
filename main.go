@@ -2,21 +2,32 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/caleb-mwasikira/intro_dsa/algos"
 )
 
 func main() {
-	// iterativeFib(n)
-	var n int = 6
-	result := algos.IterativeFib(n)
-	fmt.Printf("iterativeFib(%v) = %#v\n", n, result)
+	infix := "A+2*3"
 
-	// recursiveFib(n)
-	result = algos.RecursiveFib(n)
-	fmt.Printf("recursiveFib(%v) = %#v\n", n, result)
+	postfix, err := algos.InfixToPostFix(infix)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	// cachedRecursiveFib(n)
-	result = algos.CachedRecursiveFib(n)
-	fmt.Printf("cachedRecursiveFib(%v) = %#v\n", n, result)
+	expectedResult := 7
+	result, err := algos.EvaluateInfixExpression(
+		infix,
+		map[rune]int{
+			'A': 1,
+		},
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("infix: ", infix)
+	fmt.Println("postfix: ", postfix)
+	fmt.Println("expected result: ", expectedResult)
+	fmt.Println("result: ", result)
 }

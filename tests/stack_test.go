@@ -2,6 +2,7 @@ package tests
 
 import (
 	"fmt"
+	"slices"
 	"testing"
 
 	"github.com/caleb-mwasikira/intro_dsa/ds"
@@ -19,7 +20,7 @@ func TestNewStack(t *testing.T) {
 }
 
 func TestStackPush(t *testing.T) {
-	stack, _ := ds.NewStack(size)
+	stack, _ := ds.NewStack[int](size)
 	numItemsAdded, err := stack.Push(testArray...)
 	if err != nil {
 		t.Error("stack push threw error when it shouldnt")
@@ -62,12 +63,24 @@ func TestStackPop(t *testing.T) {
 	}
 }
 
+func TestStackGetItems(t *testing.T) {
+	myTestArray := testArray
+	stack, _ := ds.NewStack[int](size, myTestArray...)
+
+	items := stack.GetItems()
+	slices.Reverse(myTestArray)
+
+	if !slices.Equal(items, myTestArray) {
+		t.Errorf("expected stack.GetItems() to return %#v but got %#v instead", myTestArray, items)
+	}
+}
+
 func testNewStack_WithInvalidSize_Errors(t *testing.T, size int) {
 	testName := fmt.Sprintf("NewStack(%v)", size)
 
 	t.Run(testName, func(t *testing.T) {
 		// test if NewStack() return an error with zero
-		_, err := ds.NewStack(size)
+		_, err := ds.NewStack[int](size)
 		if err == nil {
 			t.Errorf("%v does not return error when it should\n", testName)
 		}
