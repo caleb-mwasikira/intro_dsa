@@ -5,7 +5,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/caleb-mwasikira/intro_dsa/algos"
+	"github.com/caleb-mwasikira/intro_dsa/alg"
 )
 
 type FibTest struct {
@@ -30,15 +30,15 @@ tests all our fib(n) functions for accuracy
 */
 func TestFib(t *testing.T) {
 	t.Run("test iterativeFib(n int) []int", func(t *testing.T) {
-		testFibFunc(t, algos.IterativeFib)
+		testFibFunc(t, alg.IterativeFib)
 	})
 
 	t.Run("test recursiveFib(n int) []int", func(t *testing.T) {
-		testFibFunc(t, algos.RecursiveFib)
+		testFibFunc(t, alg.RecursiveFib)
 	})
 
 	t.Run("test cachedRecursiveFib(n int) []int", func(t *testing.T) {
-		testFibFunc(t, algos.CachedRecursiveFib)
+		testFibFunc(t, alg.CachedRecursiveFib)
 	})
 }
 
@@ -56,7 +56,7 @@ func BenchmarkFib(b *testing.B) {
 	fmt.Println()
 	b.Run("bench iterativeFib(n int)[]int", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			algos.IterativeFib(N)
+			alg.IterativeFib(N)
 		}
 	})
 	fmt.Println()
@@ -66,7 +66,7 @@ func BenchmarkFib(b *testing.B) {
 	} else {
 		b.Run("bench recursiveFib(n int)[]int", func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				algos.RecursiveFib(N)
+				alg.RecursiveFib(N)
 			}
 		})
 		fmt.Println()
@@ -74,7 +74,7 @@ func BenchmarkFib(b *testing.B) {
 
 	b.Run("bench cachedRecursiveFib(n int)[]int", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			algos.CachedRecursiveFib(N)
+			alg.CachedRecursiveFib(N)
 		}
 	})
 }

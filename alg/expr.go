@@ -1,4 +1,4 @@
-package algos
+package alg
 
 import (
 	"fmt"

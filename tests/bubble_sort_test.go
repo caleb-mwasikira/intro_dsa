@@ -5,7 +5,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/caleb-mwasikira/intro_dsa/algos"
+	"github.com/caleb-mwasikira/intro_dsa/alg"
 	"github.com/caleb-mwasikira/intro_dsa/utils"
 )
 
@@ -14,7 +14,7 @@ func TestBubbleSort(t *testing.T) {
 		testName := fmt.Sprintf("test %v", index)
 
 		t.Run(testName, func(t *testing.T) {
-			actualOutput := algos.BubbleSort(test.Input)
+			actualOutput := alg.BubbleSort(test.Input)
 			if !slices.Equal(actualOutput, test.ExpectedOutput) {
 				t.Errorf("expected %#v, but got %#v\n", test.ExpectedOutput, actualOutput)
 			}
@@ -27,6 +27,6 @@ func BenchmarkBubbleSort(b *testing.B) {
 	arr := utils.GenRandomArray(ARRAY_MAX, 0, 100)
 
 	for i := 0; i < b.N; i++ {
-		algos.BubbleSort(arr)
+		alg.BubbleSort(arr)
 	}
 }

@@ -1,4 +1,4 @@
-package algos
+package alg
 
 func BubbleSort(items []int) []int {
 	if len(items) <= 1 {

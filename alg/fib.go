@@ -1,4 +1,4 @@
-package algos
+package alg
 
 func IterativeFib(n int) []int {
 	items := []int{}

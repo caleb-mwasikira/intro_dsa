@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/caleb-mwasikira/intro_dsa/algos"
+	"github.com/caleb-mwasikira/intro_dsa/alg"
 )
 
 type exprTest struct {
@@ -114,7 +114,7 @@ func TestInfixToPostfix(t *testing.T) {
 	for _, test := range exprTests {
 		testName := fmt.Sprintf("infixToPostfix(%s)", test.infix)
 		t.Run(testName, func(t *testing.T) {
-			myPostfix, err := algos.InfixToPostFix(test.infix)
+			myPostfix, err := alg.InfixToPostFix(test.infix)
 			if err != nil {
 				log.Fatalf("internal func error: %v", err)
 			}
@@ -140,7 +140,7 @@ func TestEvaluateInfixExpression(t *testing.T) {
 	for _, test := range allTests {
 		testName := fmt.Sprintf("evaluateInfixExpression(%v)", test.infix)
 		t.Run(testName, func(t *testing.T) {
-			result, err := algos.EvaluateInfixExpression(
+			result, err := alg.EvaluateInfixExpression(
 				test.infix,
 				test.fillInValues,
 			)
@@ -160,6 +160,6 @@ func BenchmarkInfixToPostfix(b *testing.B) {
 	test := exprTests[0]
 
 	for i := 0; i < b.N; i++ {
-		algos.InfixToPostFix(test.infix)
+		alg.InfixToPostFix(test.infix)
 	}
 }

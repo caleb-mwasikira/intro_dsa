@@ -1,4 +1,4 @@
-package algos
+package alg
 
 func InsertionSort(items []int) []int {
 	if len(items) <= 1 {
