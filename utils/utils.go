@@ -1,28 +1,48 @@
 package utils
 
 import (
-	"crypto/rand"
-	"log"
-	"math/big"
+	"fmt"
+	"math/rand"
+	"time"
 )
 
-func GenRandomArray(size, min, max int) []int {
-	if size <= 0 {
-		log.Fatal("invalid length for random array generator")
+/*
+generates a random array of size n with items between
+min and max
+*/
+func GenRandomArray(length int, min, max int) []int {
+	if length <= 0 || max <= 0 {
+		return []int{}
 	}
 
+	// if min > max, min is the new max
 	if min > max {
-		log.Fatal("min cannot be greater than max")
+		tmp := min
+		min = max
+		max = tmp
 	}
 
-	items := make([]int, size)
+	// seed random number generator with current unix timestamp
+	// to prevent generation of the same random numbers every time
+	// this function is run
+	rand.Seed(time.Now().UnixNano())
 
-	for i := 0; i < size; i++ {
-		randNumber, err := rand.Int(rand.Reader, big.NewInt(int64(max)))
-		if err != nil {
-			return []int{}
-		}
-		items[i] = int(randNumber.Int64()) + min
+	array := make([]int, length)
+
+	for i := 0; i < length; i++ {
+		randomNumber := rand.Intn(max-min+1) + min
+		array[i] = randomNumber
 	}
-	return items
+	return array
+}
+
+/*
+returns the index of a random element in an array
+*/
+func RandomIndexChoice(array []int) (int, error) {
+	if len(array) == 0 {
+		return 0, fmt.Errorf("empty array")
+	}
+	randomIndex := rand.Intn(len(array))
+	return randomIndex, nil
 }

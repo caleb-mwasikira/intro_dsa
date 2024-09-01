@@ -2,32 +2,17 @@ package main
 
 import (
 	"fmt"
-	"log"
 
-	"github.com/caleb-mwasikira/intro_dsa/alg"
+	"github.com/caleb-mwasikira/intro_dsa/ds"
+	"github.com/caleb-mwasikira/intro_dsa/utils"
 )
 
 func main() {
-	infix := "A+2*3"
+	items := utils.GenRandomArray(10, 0, 100)
 
-	postfix, err := alg.InfixToPostFix(infix)
-	if err != nil {
-		log.Fatal(err)
-	}
+	ll := ds.NewLinkedList(items...)
 
-	expectedResult := 7
-	result, err := alg.EvaluateInfixExpression(
-		infix,
-		map[rune]int{
-			'A': 1,
-		},
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("infix: ", infix)
-	fmt.Println("postfix: ", postfix)
-	fmt.Println("expected result: ", expectedResult)
-	fmt.Println("result: ", result)
+	fmt.Printf("%#v\n", items)
+	fmt.Println("linked list size: ", ll.Size())
+	fmt.Printf("%#v\n", ll.GetItems())
 }
