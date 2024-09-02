@@ -2,17 +2,26 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 
-	"github.com/caleb-mwasikira/intro_dsa/ds"
-	"github.com/caleb-mwasikira/intro_dsa/utils"
+	"github.com/caleb-mwasikira/intro_dsa/alg"
 )
 
 func main() {
-	items := utils.GenRandomArray(10, 0, 100)
-
-	ll := ds.NewLinkedList(items...)
+	items := []int{1, 2, 3, 4, 5, 6}
+	expectedIndex := rand.Intn(len(items))
+	item := items[expectedIndex]
 
 	fmt.Printf("%#v\n", items)
-	fmt.Println("linked list size: ", ll.Size())
-	fmt.Printf("%#v\n", ll.GetItems())
+
+	index := alg.BinarySearch(items, item)
+	fmt.Printf("binarySearch(%v)\n", item)
+	fmt.Println("expected index: ", expectedIndex)
+	fmt.Println("index: ", index)
+
+	fmt.Println()
+	index = alg.RecursiveBinarySearch(items, item, 0, len(items)-1)
+	fmt.Printf("recursiveBinarySearch(%v)\n", item)
+	fmt.Println("expected index: ", expectedIndex)
+	fmt.Println("index: ", index)
 }
