@@ -1,6 +1,8 @@
 package ds
 
-import "errors"
+import (
+	"errors"
+)
 
 var (
 	ErrQueueIsFull  error = errors.New("cannot add further items. queue is full")
@@ -18,14 +20,14 @@ func (e ErrInvalidQueueSize) Error() string {
 	return "invalid queue size"
 }
 
-type CircularQueue struct {
+type CircularQueue[T any] struct {
 	rear  int
 	front int
 	size  int
-	items []int
+	items []T
 }
 
-func NewCircularQueue(size int, items ...int) (*CircularQueue, error) {
+func NewCircularQueue[T any](size int, items ...T) (*CircularQueue[T], error) {
 	if size <= 0 {
 		return nil, ErrInvalidQueueSize{}
 	}
@@ -36,25 +38,25 @@ func NewCircularQueue(size int, items ...int) (*CircularQueue, error) {
 		}
 	}
 
-	q := CircularQueue{
+	q := CircularQueue[T]{
 		rear:  -1,
 		front: -1,
 		size:  size,
-		items: make([]int, size),
+		items: make([]T, size),
 	}
-	q.Enqueue(items...)
+	q.Push(items...)
 
 	return &q, nil
 }
 
-func (q *CircularQueue) Enqueue(items ...int) error {
+func (q *CircularQueue[T]) Push(items ...T) error {
 	for _, item := range items {
-		if q.isFull() {
+		if q.IsFull() {
 			return ErrQueueIsFull
 		}
 
 		// if adding first element, set FRONT = 0
-		if q.isEmpty() {
+		if q.IsEmpty() {
 			q.front = 0
 		}
 
@@ -69,10 +71,10 @@ func (q *CircularQueue) Enqueue(items ...int) error {
 	}
 	return nil
 }
-
-func (q *CircularQueue) Dequeue() (int, error) {
-	if q.isEmpty() {
-		return 0, ErrQueueIsEmpty
+func (q *CircularQueue[T]) Front() (T, error) {
+	if q.IsEmpty() {
+		var none T
+		return none, ErrQueueIsEmpty
 	}
 
 	item := q.items[q.front]
@@ -94,7 +96,7 @@ func (q *CircularQueue) Dequeue() (int, error) {
 	return item, nil
 }
 
-func (q CircularQueue) isEmpty() bool {
+func (q CircularQueue[T]) IsEmpty() bool {
 	return q.front == -1 && q.rear == -1
 }
 
@@ -104,10 +106,10 @@ The check for full circular queue has a new additional case:
 	Case 1: FRONT = 0 && REAR == SIZE - 1
 	Case 2: FRONT = (REAR + 1)%SIZE
 */
-func (q CircularQueue) isFull() bool {
+func (q CircularQueue[T]) IsFull() bool {
 	return (q.front == 0 && q.rear == q.size-1) || q.front == (q.rear+1)%q.size
 }
 
-func (q CircularQueue) GetItems() []int {
-	return q.items
+func (q CircularQueue[T]) GetItems() []T {
+	return q.items[:q.rear+1]
 }
