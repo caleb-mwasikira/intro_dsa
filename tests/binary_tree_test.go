@@ -118,3 +118,15 @@ func TestTreeMax(t *testing.T) {
 		t.Errorf("expected treeMax() to return %v but got %v", calcMax, treeMax)
 	}
 }
+
+func TestBreadthFirstTraversal(t *testing.T) {
+	expectedOrderOfItems := []int{17, 43, 49, 31, 6, 11, 8}
+	orderOfItems, err := ds.BreadthFirstTraversal(bt.Root)
+	if err != nil {
+		t.Errorf("unexpected error calling breadthFirstTraversal() algorithm: %v", err)
+	}
+
+	if !slices.Equal(orderOfItems, expectedOrderOfItems) {
+		t.Errorf("expected items %#v on breadthFirstTraversal() but got %#v", expectedOrderOfItems, orderOfItems)
+	}
+}

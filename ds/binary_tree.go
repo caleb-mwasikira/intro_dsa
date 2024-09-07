@@ -128,3 +128,47 @@ func TreeMax(root *TreeNode, max int) int {
 		return maxRight
 	}
 }
+
+func BreadthFirstTraversal(root *TreeNode) ([]int, error) {
+	if root == nil {
+		return []int{}, nil
+	}
+
+	// create queue and push root node onto the queue.
+	// we don't know how many nodes are going to be on the tree,
+	// so we pick an arbitrary size for our queue.
+	size := 10
+	queue, err := NewCircularQueue[*TreeNode](size)
+	if err != nil {
+		return []int{}, err
+	}
+	err = queue.Push(root)
+	if err != nil {
+		return []int{}, err
+	}
+
+	items := []int{}
+	for !queue.IsEmpty() {
+		currentNode, err := queue.Front()
+		if err != nil {
+			return []int{}, err
+		}
+
+		items = append(items, currentNode.Data)
+
+		if currentNode.Left != nil {
+			err = queue.Push(currentNode.Left)
+			if err != nil {
+				return []int{}, err
+			}
+		}
+
+		if currentNode.Right != nil {
+			err = queue.Push(currentNode.Right)
+			if err != nil {
+				return []int{}, err
+			}
+		}
+	}
+	return items, nil
+}
