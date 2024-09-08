@@ -161,3 +161,5 @@ func (ll LinkedList) GetItems() []int {
 	}
 	return items
 }
+
+// TODO: implement ordered insertion to linked list 1->2->3->?

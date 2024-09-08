@@ -9,8 +9,9 @@ import (
 )
 
 var (
-	items = []int{17, 43, 49, 31, 6, 11, 8}
-	bt    *ds.BinaryTree
+	items             = []int{17, 43, 49, 31, 6, 11, 8}
+	expectedBTInorder = []int{31, 43, 6, 17, 11, 49, 8}
+	bt                *ds.BinaryTree
 )
 
 func init() {
@@ -41,41 +42,58 @@ func TestBTInsert(t *testing.T) {
 
 	// best way to test the presence of all nodes is
 	// to do a traversal on the binary tree
-	expectedInorderItems := []int{31, 43, 6, 17, 11, 49, 8}
 	inorderItems := ds.InorderTraversal(root)
 
-	if !slices.Equal(inorderItems, expectedInorderItems) {
-		t.Errorf("expected inorder traversal to return nodes %#v in binary tree but got %#v", expectedInorderItems, inorderItems)
+	if !slices.Equal(inorderItems, expectedBTInorder) {
+		t.Errorf("expected inorder traversal to return nodes %#v in binary tree but got %#v", expectedBTInorder, inorderItems)
 	}
 }
 
 func TestNewBinaryTree(t *testing.T) {
 	// best way to test the presence of all nodes is
 	// to do a traversal on the binary tree
-	expectedInorderItems := []int{31, 43, 6, 17, 11, 49, 8}
 	inorderItems := ds.InorderTraversal(bt.Root)
 
-	if !slices.Equal(inorderItems, expectedInorderItems) {
-		t.Errorf("expected inorder traversal to return nodes %#v in binary tree but got %#v", expectedInorderItems, inorderItems)
+	if !slices.Equal(inorderItems, expectedBTInorder) {
+		t.Errorf("expected inorder traversal to return nodes %#v in binary tree but got %#v", expectedBTInorder, inorderItems)
 	}
 }
 
-func TestTreeIncludes(t *testing.T) {
+func TestBTIncludes(t *testing.T) {
 	// pick random item from items array
 	randIndex := rand.Intn(len(items))
 	item := items[randIndex]
 
-	// test treeIncludes() on item in items array
-	includes := ds.TreeIncludes(bt.Root, item)
+	// test btIncludes() on item in items array
+	includes := ds.BTIncludes(bt.Root, item)
 	if !includes {
-		t.Errorf("expected item %v to be in binary tree but treeIncludes() returned false", item)
+		t.Errorf("expected item %v to be in binary tree but btIncludes() returned false", item)
 	}
 
-	// test treeIncludes() on item NOT in items array
+	// test btIncludes() on item NOT in items array
 	item = 69
-	includes = ds.TreeIncludes(bt.Root, item)
+	includes = ds.BTIncludes(bt.Root, item)
 	if includes {
-		t.Errorf("expected item %v to NOT be in binary tree but treeIncludes() returned true", item)
+		t.Errorf("expected item %v to NOT be in binary tree but btIncludes() returned true", item)
+	}
+}
+
+func TestBTSearch(t *testing.T) {
+	// pick random item from items array
+	randIndex := rand.Intn(len(items))
+	item := items[randIndex]
+
+	// test search() on item in items array
+	node := ds.BTSearch(bt.Root, item)
+	if node == nil {
+		t.Errorf("expected item %v to be in binary tree but search() returned nil", item)
+	}
+
+	// test search() on item NOT in items array
+	item = 69
+	node = ds.BTSearch(bt.Root, item)
+	if node != nil {
+		t.Errorf("expected item %v to NOT be in binary tree but search() found returned non-nil item", item)
 	}
 }
 

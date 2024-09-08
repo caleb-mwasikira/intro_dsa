@@ -43,6 +43,55 @@ func NewBST(items ...int) BST {
 	return bst
 }
 
+func BSTIncludes(root *TreeNode, item int) bool {
+	if root == nil {
+		return false
+	}
+
+	if item < root.Data {
+		return BSTIncludes(root.Left, item)
+	} else if item > root.Data {
+		return BSTIncludes(root.Right, item)
+	} else {
+		// item == root.Data
+		return true
+	}
+}
+
+func BSTSearch(root *TreeNode, item int) *TreeNode {
+	if root == nil {
+		return nil
+	}
+
+	if item < root.Data {
+		return BSTSearch(root.Left, item)
+	} else if item > root.Data {
+		return BSTSearch(root.Right, item)
+	} else {
+		// item == root.Data
+		return root
+	}
+}
+
+/* Note: binary search trees do NOT guarentee any form of node balancing.
+In the worst case scenario, a binary search tree could be skewed linearly
+to the left or right like so;
+
+input: [1,2,3,4]	     or          [4,3,2,1]
+			1							4
+		     \						   /
+			  2						  3
+			   \					 /
+			    3					2
+				 \				   /
+				  4				  1
+
+Having a BST skewed like this reduces the performance of BST search algorithm
+from O(log n) O(n), as our BST 'tree' is now just a fancy linked-list.
+
+TODO: to prevent this learn about self-balancing trees
+*/
+
 func PreorderTraversal(root *TreeNode) []int {
 	if root == nil {
 		return []int{}

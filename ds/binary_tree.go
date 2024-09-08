@@ -72,7 +72,7 @@ func NewBinaryTree(items ...int) (*BinaryTree, error) {
 	}, nil
 }
 
-func TreeIncludes(root *TreeNode, item int) bool {
+func BTIncludes(root *TreeNode, item int) bool {
 	if root == nil {
 		return false
 	}
@@ -81,7 +81,30 @@ func TreeIncludes(root *TreeNode, item int) bool {
 		return true
 	}
 
-	return TreeIncludes(root.Left, item) || TreeIncludes(root.Right, item)
+	return BTIncludes(root.Left, item) || BTIncludes(root.Right, item)
+}
+
+func BTSearch(root *TreeNode, item int) *TreeNode {
+	if root == nil {
+		return nil
+	}
+
+	// preorder traversal; root->left->right
+	if root.Data == item {
+		return root
+	}
+
+	leftNode := BTSearch(root.Left, item)
+	if leftNode != nil {
+		return leftNode
+	}
+
+	rightNode := BTSearch(root.Right, item)
+	if rightNode != nil {
+		return rightNode
+	}
+
+	return nil
 }
 
 func TreeSum(root *TreeNode) int {
