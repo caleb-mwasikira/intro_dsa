@@ -9,6 +9,7 @@ import (
 )
 
 var (
+	bstItems             = []int{17, 43, 49, 31, 6, 11, 8}
 	expectedBSTPreorder  = []int{17, 6, 11, 8, 43, 31, 49}
 	expectedBSTInorder   = []int{6, 8, 11, 17, 31, 43, 49}
 	expectedBSTPostorder = []int{8, 11, 6, 31, 49, 43, 17}
@@ -28,10 +29,10 @@ func init() {
 }
 
 func TestBSTInsert(t *testing.T) {
-	var rootNode ds.TreeNode
-	for index, item := range items {
+	var rootNode ds.Node
+	for index, item := range bstItems {
 		if index == 0 {
-			rootNode = ds.TreeNode{Data: item}
+			rootNode = ds.Node{Data: item}
 			continue
 		}
 
@@ -47,7 +48,7 @@ func TestBSTInsert(t *testing.T) {
 }
 
 func TestNewBST(t *testing.T) {
-	bst := ds.NewBST(items...)
+	bst := ds.NewBST(bstItems...)
 
 	// check if root is set up correctly
 	if bst.Root == nil || bst.Root.Left == nil || bst.Root.Right == nil {
@@ -63,7 +64,7 @@ func TestNewBST(t *testing.T) {
 }
 
 func TestPreorderTraversal(t *testing.T) {
-	bst := ds.NewBST(items...)
+	bst := ds.NewBST(bstItems...)
 	preorder := ds.PreorderTraversal(bst.Root)
 
 	if !slices.Equal(preorder, expectedBSTPreorder) {
@@ -72,7 +73,7 @@ func TestPreorderTraversal(t *testing.T) {
 }
 
 func TestInorderTraversal(t *testing.T) {
-	bst := ds.NewBST(items...)
+	bst := ds.NewBST(bstItems...)
 	preorder := ds.InorderTraversal(bst.Root)
 
 	if !slices.Equal(preorder, expectedBSTInorder) {
@@ -81,7 +82,7 @@ func TestInorderTraversal(t *testing.T) {
 }
 
 func TestPostorderTraversal(t *testing.T) {
-	bst := ds.NewBST(items...)
+	bst := ds.NewBST(bstItems...)
 	preorder := ds.PostorderTraversal(bst.Root)
 
 	if !slices.Equal(preorder, expectedBSTPostorder) {
@@ -91,10 +92,10 @@ func TestPostorderTraversal(t *testing.T) {
 
 func TestBSTIncludes(t *testing.T) {
 	// pick random item from items array
-	randIndex := rand.Intn(len(items))
-	item := items[randIndex]
+	randIndex := rand.Intn(len(bstItems))
+	item := bstItems[randIndex]
 
-	bst := ds.NewBST(items...)
+	bst := ds.NewBST(bstItems...)
 
 	// test bstIncludes() on item in items array
 	includes := ds.BSTIncludes(bst.Root, item)
@@ -112,10 +113,10 @@ func TestBSTIncludes(t *testing.T) {
 
 func TestBSTSearch(t *testing.T) {
 	// pick random item from items array
-	randIndex := rand.Intn(len(items))
-	item := items[randIndex]
+	randIndex := rand.Intn(len(bstItems))
+	item := bstItems[randIndex]
 
-	bst := ds.NewBST(items...)
+	bst := ds.NewBST(bstItems...)
 
 	// test bstSearch() on item in items array
 	node := ds.BSTSearch(bst.Root, item)

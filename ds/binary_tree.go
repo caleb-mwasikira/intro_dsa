@@ -3,10 +3,10 @@ package ds
 import "fmt"
 
 type BinaryTree struct {
-	Root *TreeNode
+	Root *Node
 }
 
-func BTInsert(root *TreeNode, items ...int) (*TreeNode, error) {
+func BTInsert(root *Node, items ...int) (*Node, error) {
 	if len(items) == 0 {
 		return nil, fmt.Errorf("cannot create new node; empty array")
 	}
@@ -14,20 +14,20 @@ func BTInsert(root *TreeNode, items ...int) (*TreeNode, error) {
 	if root == nil {
 		item := items[0]
 		items = items[1:]
-		root = &TreeNode{Data: item}
+		root = &Node{Data: item}
 	}
 
-	queue, err := NewCircularQueue[*TreeNode](len(items))
+	queue, err := NewCircularQueue[*Node](len(items))
 	if err != nil {
 		return nil, err
 	}
-	err = queue.Push(root)
+	err = queue.AddItems(root)
 	if err != nil {
 		return nil, err
 	}
 
 	for !queue.IsEmpty() {
-		currentNode, err := queue.Front()
+		currentNode, err := queue.GetFrontItem()
 		if err != nil {
 			return nil, err
 		}
@@ -39,10 +39,10 @@ func BTInsert(root *TreeNode, items ...int) (*TreeNode, error) {
 
 			item := items[0]
 			items = items[1:]
-			newNode := TreeNode{Data: item}
+			newNode := Node{Data: item}
 
 			currentNode.Left = &newNode
-			queue.Push(&newNode)
+			queue.AddItems(&newNode)
 		}
 
 		if currentNode.Right == nil {
@@ -52,10 +52,10 @@ func BTInsert(root *TreeNode, items ...int) (*TreeNode, error) {
 
 			item := items[0]
 			items = items[1:]
-			newNode := TreeNode{Data: item}
+			newNode := Node{Data: item}
 
 			currentNode.Right = &newNode
-			queue.Push(&newNode)
+			queue.AddItems(&newNode)
 		}
 	}
 	return root, nil
@@ -72,7 +72,7 @@ func NewBinaryTree(items ...int) (*BinaryTree, error) {
 	}, nil
 }
 
-func BTIncludes(root *TreeNode, item int) bool {
+func BTIncludes(root *Node, item int) bool {
 	if root == nil {
 		return false
 	}
@@ -84,7 +84,7 @@ func BTIncludes(root *TreeNode, item int) bool {
 	return BTIncludes(root.Left, item) || BTIncludes(root.Right, item)
 }
 
-func BTSearch(root *TreeNode, item int) *TreeNode {
+func BTSearch(root *Node, item int) *Node {
 	if root == nil {
 		return nil
 	}
@@ -107,14 +107,14 @@ func BTSearch(root *TreeNode, item int) *TreeNode {
 	return nil
 }
 
-func TreeSum(root *TreeNode) int {
+func TreeSum(root *Node) int {
 	if root == nil {
 		return 0
 	}
 	return root.Data + TreeSum(root.Left) + TreeSum(root.Right)
 }
 
-func TreeMin(root *TreeNode, min int) int {
+func TreeMin(root *Node, min int) int {
 	if root == nil {
 		return min
 	}
@@ -133,7 +133,7 @@ func TreeMin(root *TreeNode, min int) int {
 	}
 }
 
-func TreeMax(root *TreeNode, max int) int {
+func TreeMax(root *Node, max int) int {
 	if root == nil {
 		return max
 	}
@@ -152,27 +152,27 @@ func TreeMax(root *TreeNode, max int) int {
 	}
 }
 
-func BreadthFirstTraversal(root *TreeNode) ([]int, error) {
+func BreadthFirstTraversal(root *Node) ([]int, error) {
 	if root == nil {
 		return []int{}, nil
 	}
 
-	// create queue and push root node onto the queue.
+	// create queue and AddItems root node onto the queue.
 	// we don't know how many nodes are going to be on the tree,
 	// so we pick an arbitrary size for our queue.
 	size := 10
-	queue, err := NewCircularQueue[*TreeNode](size)
+	queue, err := NewCircularQueue[*Node](size)
 	if err != nil {
 		return []int{}, err
 	}
-	err = queue.Push(root)
+	err = queue.AddItems(root)
 	if err != nil {
 		return []int{}, err
 	}
 
 	items := []int{}
 	for !queue.IsEmpty() {
-		currentNode, err := queue.Front()
+		currentNode, err := queue.GetFrontItem()
 		if err != nil {
 			return []int{}, err
 		}
@@ -180,14 +180,14 @@ func BreadthFirstTraversal(root *TreeNode) ([]int, error) {
 		items = append(items, currentNode.Data)
 
 		if currentNode.Left != nil {
-			err = queue.Push(currentNode.Left)
+			err = queue.AddItems(currentNode.Left)
 			if err != nil {
 				return []int{}, err
 			}
 		}
 
 		if currentNode.Right != nil {
-			err = queue.Push(currentNode.Right)
+			err = queue.AddItems(currentNode.Right)
 			if err != nil {
 				return []int{}, err
 			}

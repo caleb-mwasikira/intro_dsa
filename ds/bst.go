@@ -1,14 +1,14 @@
 package ds
 
-type TreeNode struct {
+type Node struct {
 	Data  int
-	Left  *TreeNode
-	Right *TreeNode
+	Left  *Node
+	Right *Node
 }
 
-func BSTInsert(root *TreeNode, item int) *TreeNode {
+func BSTInsert(root *Node, item int) *Node {
 	if root == nil {
-		newNode := TreeNode{Data: item}
+		newNode := Node{Data: item}
 		return &newNode
 	}
 
@@ -26,7 +26,7 @@ func BSTInsert(root *TreeNode, item int) *TreeNode {
 }
 
 type BST struct {
-	Root *TreeNode
+	Root *Node
 }
 
 func NewBST(items ...int) BST {
@@ -34,7 +34,7 @@ func NewBST(items ...int) BST {
 
 	for index, item := range items {
 		if index == 0 {
-			bst.Root = &TreeNode{Data: item}
+			bst.Root = &Node{Data: item}
 			continue
 		}
 
@@ -43,7 +43,7 @@ func NewBST(items ...int) BST {
 	return bst
 }
 
-func BSTIncludes(root *TreeNode, item int) bool {
+func BSTIncludes(root *Node, item int) bool {
 	if root == nil {
 		return false
 	}
@@ -58,7 +58,7 @@ func BSTIncludes(root *TreeNode, item int) bool {
 	}
 }
 
-func BSTSearch(root *TreeNode, item int) *TreeNode {
+func BSTSearch(root *Node, item int) *Node {
 	if root == nil {
 		return nil
 	}
@@ -92,7 +92,7 @@ from O(log n) O(n), as our BST 'tree' is now just a fancy linked-list.
 TODO: to prevent this learn about self-balancing trees
 */
 
-func PreorderTraversal(root *TreeNode) []int {
+func PreorderTraversal(root *Node) []int {
 	if root == nil {
 		return []int{}
 	}
@@ -104,7 +104,7 @@ func PreorderTraversal(root *TreeNode) []int {
 	return append(append([]int{root.Data}, leftValues...), rightValues...)
 }
 
-func InorderTraversal(root *TreeNode) []int {
+func InorderTraversal(root *Node) []int {
 	if root == nil {
 		return []int{}
 	}
@@ -116,7 +116,7 @@ func InorderTraversal(root *TreeNode) []int {
 	return append(append(leftValues, root.Data), rightValues...)
 }
 
-func PostorderTraversal(root *TreeNode) []int {
+func PostorderTraversal(root *Node) []int {
 	if root == nil {
 		return []int{}
 	}

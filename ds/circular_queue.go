@@ -44,12 +44,12 @@ func NewCircularQueue[T any](size int, items ...T) (*CircularQueue[T], error) {
 		size:  size,
 		items: make([]T, size),
 	}
-	q.Push(items...)
+	q.AddItems(items...)
 
 	return &q, nil
 }
 
-func (q *CircularQueue[T]) Push(items ...T) error {
+func (q *CircularQueue[T]) AddItems(items ...T) error {
 	for _, item := range items {
 		if q.IsFull() {
 			return ErrQueueIsFull
@@ -71,7 +71,7 @@ func (q *CircularQueue[T]) Push(items ...T) error {
 	}
 	return nil
 }
-func (q *CircularQueue[T]) Front() (T, error) {
+func (q *CircularQueue[T]) GetFrontItem() (T, error) {
 	if q.IsEmpty() {
 		var none T
 		return none, ErrQueueIsEmpty
@@ -96,6 +96,42 @@ func (q *CircularQueue[T]) Front() (T, error) {
 	return item, nil
 }
 
+func (q *CircularQueue[T]) GetFrontItems(n int) ([]T, error) {
+	items := []T{}
+
+	for i := 0; i < n; i++ {
+		item, err := q.GetFrontItem()
+		if err != nil {
+			break
+		}
+		items = append(items, item)
+	}
+	return items, nil
+}
+
+func (q CircularQueue[T]) PeekFront() (T, error) {
+	if q.IsEmpty() {
+		var none T
+		return none, ErrQueueIsEmpty
+	}
+
+	item := q.items[q.front]
+	return item, nil
+}
+
+func (q CircularQueue[T]) PeekFrontItems(n int) ([]T, error) {
+	items := []T{}
+
+	for i := 0; i < n; i++ {
+		item, err := q.GetFrontItem()
+		if err != nil {
+			break
+		}
+		items = append(items, item)
+	}
+	return items, nil
+}
+
 func (q CircularQueue[T]) IsEmpty() bool {
 	return q.front == -1 && q.rear == -1
 }
@@ -110,6 +146,6 @@ func (q CircularQueue[T]) IsFull() bool {
 	return (q.front == 0 && q.rear == q.size-1) || q.front == (q.rear+1)%q.size
 }
 
-func (q CircularQueue[T]) GetItems() []T {
+func (q CircularQueue[T]) GetAllItems() []T {
 	return q.items[:q.rear+1]
 }

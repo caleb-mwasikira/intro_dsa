@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	items             = []int{17, 43, 49, 31, 6, 11, 8}
+	btItems           = []int{17, 43, 49, 31, 6, 11, 8}
 	expectedBTInorder = []int{31, 43, 6, 17, 11, 49, 8}
 	bt                *ds.BinaryTree
 )
@@ -26,7 +26,7 @@ func init() {
 
 	var err error
 	var t *testing.T = &testing.T{}
-	bt, err = ds.NewBinaryTree(items...)
+	bt, err = ds.NewBinaryTree(btItems...)
 	if err != nil {
 		t.Errorf("unexpected error creating binary tree with valid arguments: %v", err)
 		return
@@ -34,7 +34,7 @@ func init() {
 }
 
 func TestBTInsert(t *testing.T) {
-	root, err := ds.BTInsert(nil, items...)
+	root, err := ds.BTInsert(nil, btItems...)
 	if err != nil {
 		t.Errorf("unexpected error creating binary tree with valid arguments: %v", err)
 		return
@@ -60,9 +60,9 @@ func TestNewBinaryTree(t *testing.T) {
 }
 
 func TestBTIncludes(t *testing.T) {
-	// pick random item from items array
-	randIndex := rand.Intn(len(items))
-	item := items[randIndex]
+	// pick random item from btItems array
+	randIndex := rand.Intn(len(btItems))
+	item := btItems[randIndex]
 
 	// test btIncludes() on item in items array
 	includes := ds.BTIncludes(bt.Root, item)
@@ -79,11 +79,11 @@ func TestBTIncludes(t *testing.T) {
 }
 
 func TestBTSearch(t *testing.T) {
-	// pick random item from items array
-	randIndex := rand.Intn(len(items))
-	item := items[randIndex]
+	// pick random item from btItems array
+	randIndex := rand.Intn(len(btItems))
+	item := btItems[randIndex]
 
-	// test search() on item in items array
+	// test search() on item in btItems array
 	node := ds.BTSearch(bt.Root, item)
 	if node == nil {
 		t.Errorf("expected item %v to be in binary tree but search() returned nil", item)
@@ -99,7 +99,7 @@ func TestBTSearch(t *testing.T) {
 
 func TestTreeSum(t *testing.T) {
 	calcSum := 0
-	for _, item := range items {
+	for _, item := range btItems {
 		calcSum += item
 	}
 
@@ -110,41 +110,41 @@ func TestTreeSum(t *testing.T) {
 }
 
 func TestTreeMin(t *testing.T) {
-	calcMin := items[0]
-	for _, item := range items {
+	calcMin := btItems[0]
+	for _, item := range btItems {
 		if item < calcMin {
 			calcMin = item
 		}
 	}
 
-	treeMin := ds.TreeMin(bt.Root, items[0])
+	treeMin := ds.TreeMin(bt.Root, btItems[0])
 	if treeMin != calcMin {
 		t.Errorf("expected treeMin() to return %v but got %v", calcMin, treeMin)
 	}
 }
 
 func TestTreeMax(t *testing.T) {
-	calcMax := items[0]
-	for _, item := range items {
+	calcMax := btItems[0]
+	for _, item := range btItems {
 		if item > calcMax {
 			calcMax = item
 		}
 	}
 
-	treeMax := ds.TreeMax(bt.Root, items[0])
+	treeMax := ds.TreeMax(bt.Root, btItems[0])
 	if treeMax != calcMax {
 		t.Errorf("expected treeMax() to return %v but got %v", calcMax, treeMax)
 	}
 }
 
 func TestBreadthFirstTraversal(t *testing.T) {
-	expectedOrderOfItems := []int{17, 43, 49, 31, 6, 11, 8}
-	orderOfItems, err := ds.BreadthFirstTraversal(bt.Root)
+	expectedOrderOfbtItems := []int{17, 43, 49, 31, 6, 11, 8}
+	orderOfbtItems, err := ds.BreadthFirstTraversal(bt.Root)
 	if err != nil {
 		t.Errorf("unexpected error calling breadthFirstTraversal() algorithm: %v", err)
 	}
 
-	if !slices.Equal(orderOfItems, expectedOrderOfItems) {
-		t.Errorf("expected items %#v on breadthFirstTraversal() but got %#v", expectedOrderOfItems, orderOfItems)
+	if !slices.Equal(orderOfbtItems, expectedOrderOfbtItems) {
+		t.Errorf("expected btItems %#v on breadthFirstTraversal() but got %#v", expectedOrderOfbtItems, orderOfbtItems)
 	}
 }
